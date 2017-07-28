@@ -100,13 +100,13 @@
 <meta property="og:site_name" content="qiaoshuangyuan---BLOG">
 <meta property="og:description" content="3.1 继承的概念3.1.1 父类和子类我们在定义一个新类的时候,经常会遇到要定义的新类是某个类的扩展或者是对某个类的修正这种情况。 像这种通过扩展或者修改既有类来定义新类的方法叫作继承（inheritance）。在继承的关系中，被继承的类叫作父类（superclass），通过继承关系新建的类成为子类（subclass）。 继承意味着子类继承了父类的所有特性，父类的数据成员和成员函数自动成为子类的">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://otqbqeai0.bkt.clouddn.com/WechatIMG7.jpeg">
 <meta property="og:image" content="http://otqbqeai0.bkt.clouddn.com/sunny.png">
-<meta property="og:image" content="http://otqbqeai0.bkt.clouddn.com/sunny.png">
-<meta property="og:updated_time" content="2017-07-27T03:25:17.000Z">
+<meta property="og:updated_time" content="2017-07-28T01:33:15.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Markdown练习">
 <meta name="twitter:description" content="3.1 继承的概念3.1.1 父类和子类我们在定义一个新类的时候,经常会遇到要定义的新类是某个类的扩展或者是对某个类的修正这种情况。 像这种通过扩展或者修改既有类来定义新类的方法叫作继承（inheritance）。在继承的关系中，被继承的类叫作父类（superclass），通过继承关系新建的类成为子类（subclass）。 继承意味着子类继承了父类的所有特性，父类的数据成员和成员函数自动成为子类的">
-<meta name="twitter:image" content="http://otqbqeai0.bkt.clouddn.com/sunny.png">
+<meta name="twitter:image" content="http://otqbqeai0.bkt.clouddn.com/WechatIMG7.jpeg">
 
 
 
@@ -343,12 +343,61 @@
 </ul>
 <p>当然，如果子类中只追加新的实例变量而不变更方法则没有任何意义。子类中重新定义父类的方法叫作<strong>重写</strong>（override）。</p>
 <p><strong><em>代码段</em></strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">#import &lt;Foundation/Foundation.h&gt;</div><div class="line">int main(int argc, const char * argv[]) &#123;</div><div class="line">    @autoreleasepool &#123;</div><div class="line">        // insert code here...</div><div class="line">        NSLog(@&quot;Hello, World!&quot;);</div><div class="line">    &#125;</div><div class="line">    return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p><strong><em>引用</em></strong></p>
-<blockquote>
+<h1 id="3-2-列表"><a href="#3-2-列表" class="headerlink" title="3.2 列表"></a>3.2 列表</h1><p><strong><em>1.有序列表</em></strong></p>
+<ol>
+<li>1 </li>
+<li>1</li>
+<li>1</li>
+</ol>
+<p><strong><em>2.无序列表</em></strong></p>
+<ul>
+<li>1</li>
+<li>2</li>
+<li>3</li>
+</ul>
+<h1 id="3-3-TODO-列表"><a href="#3-3-TODO-列表" class="headerlink" title="3.3 TODO 列表"></a>3.3 TODO 列表</h1><ul>
+<li>[ ] RGB<ul>
+<li>[x] 红</li>
+<li>[x] 绿</li>
+<li>[x] 蓝</li>
+</ul>
+</li>
+</ul>
+<h1 id="3-4-引用"><a href="#3-4-引用" class="headerlink" title="3.4 引用"></a>3.4 引用</h1><blockquote>
 <p>一盏灯， 一片昏黄；<br>一简书， 一杯淡茶~~~</p>
 </blockquote>
-<p><strong><em>超链接</em></strong><br><a href="https://www.baidu.com" target="_blank" rel="external">百度一下</a></p>
-<p><strong><em>图片显示</em></strong><br><img src="http://otqbqeai0.bkt.clouddn.com/sunny.png" width="100" height="100"></p>
+<h1 id="3-5-表格"><a href="#3-5-表格" class="headerlink" title="3.5 表格"></a>3.5 表格</h1><table>
+<thead>
+<tr>
+<th>Tables</th>
+<th style="text-align:right">right</th>
+<th style="text-align:center">center</th>
+<th style="text-align:left">left</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>col1</td>
+<td style="text-align:right">右</td>
+<td style="text-align:center">居</td>
+<td style="text-align:left">左</td>
+</tr>
+<tr>
+<td>col2</td>
+<td style="text-align:right">对</td>
+<td style="text-align:center">中</td>
+<td style="text-align:left">对</td>
+</tr>
+<tr>
+<td>col3</td>
+<td style="text-align:right">齐</td>
+<td style="text-align:center">～</td>
+<td style="text-align:left">齐</td>
+</tr>
+</tbody>
+</table>
+<h1 id="3-6-超链接"><a href="#3-6-超链接" class="headerlink" title="3.6 超链接"></a>3.6 超链接</h1><p><a href="https://www.baidu.com" target="_blank" rel="external">百度一下</a></p>
+<h1 id="3-7-图片显示"><a href="#3-7-图片显示" class="headerlink" title="3.7 图片显示"></a>3.7 图片显示</h1><p><img src="http://otqbqeai0.bkt.clouddn.com/WechatIMG7.jpeg" width="100" height="100"></p>
 <p><img src="http://otqbqeai0.bkt.clouddn.com/sunny.png" alt="image"></p>
 
       
@@ -386,8 +435,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/07/24/hello-world/" rel="next" title="Hello World">
-                <i class="fa fa-chevron-left"></i> Hello World
+              <a href="/2017/07/26/博客发布所用命令/" rel="next" title="博客发布所用命令">
+                <i class="fa fa-chevron-left"></i> 博客发布所用命令
               </a>
             
           </div>
@@ -395,10 +444,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/07/26/博客发布所用命令/" rel="prev" title="博客发布所用命令">
-                博客发布所用命令 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -519,7 +564,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#3-1-继承的概念"><span class="nav-number">1.</span> <span class="nav-text">3.1 继承的概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-1-父类和子类"><span class="nav-number">1.1.</span> <span class="nav-text">3.1.1 父类和子类</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#3-1-继承的概念"><span class="nav-number">1.</span> <span class="nav-text">3.1 继承的概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-1-父类和子类"><span class="nav-number">1.1.</span> <span class="nav-text">3.1.1 父类和子类</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-2-列表"><span class="nav-number">2.</span> <span class="nav-text">3.2 列表</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-3-TODO-列表"><span class="nav-number">3.</span> <span class="nav-text">3.3 TODO 列表</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-4-引用"><span class="nav-number">4.</span> <span class="nav-text">3.4 引用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-5-表格"><span class="nav-number">5.</span> <span class="nav-text">3.5 表格</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-6-超链接"><span class="nav-number">6.</span> <span class="nav-text">3.6 超链接</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-7-图片显示"><span class="nav-number">7.</span> <span class="nav-text">3.7 图片显示</span></a></li></ol></div>
             
 
           </div>
