@@ -264,6 +264,415 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/11/property指示符/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="qiaoshuangyuan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="qiaoshuangyuan---BLOG">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/09/11/property指示符/" itemprop="url">property指示符</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-11T15:53:20+08:00">
+                2017-09-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="一、-property指示符"><a href="#一、-property指示符" class="headerlink" title="一、@property指示符"></a>一、@property指示符</h1><p>在声明属性的时候一般会带上几个指示符，它的作用是：<strong>建议编译器生成不同的getter和setter方法</strong>，atomic/nonatomic/retain/assign/copy 这些只是给编译器的建议，编译器会首先会到你的代码里面去找。如果你定义了相应的getter和setter的话，那么好，用你的；如果没有，编译器就会根据atomic/nonatomic/retain/assign/copy 这些你指定的某几个规则去生成相应的getter和setter。常用指示符有：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">1. atomic / nonatomic</div><div class="line">2. readwrite / readonly</div><div class="line">3. assign</div><div class="line">4. strong</div><div class="line">5. weak</div><div class="line">6. copy</div><div class="line">7. unsafe_unretained</div><div class="line">8. retain</div></pre></td></tr></table></figure>
+<p>这些指示符可以分为以下四类：</p>
+<p>1、多线程特性：用于多线程管理</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">nonatomic ／ atomic</div></pre></td></tr></table></figure>
+<p>2、读 /写特性：用于是否要生成set方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">readwrite ／ readonly</div></pre></td></tr></table></figure>
+<p>3、内存管理特性：用于set方法内存管理</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">retain ／ assign ／ copy ／ strong ／ weak ／ unsafe_unretained ／ autoreleasing</div></pre></td></tr></table></figure>
+<p>4、方法名特性：用于set、get方法重命名（常用于BOOL类型的成员变量的get方法,BOOL方法常以is开头（set方法很少用））</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">setter ／ getter</div></pre></td></tr></table></figure>
+<h2 id="1、atomic-nonatomic"><a href="#1、atomic-nonatomic" class="headerlink" title="1、atomic/nonatomic"></a>1、atomic/nonatomic</h2><p>指定合成存取方法是否为原子操作，可以理解为是否线程安全。</p>
+<blockquote>
+<p>atomic：（默认参数）指定合成存取方法为原子操作，可以理解为线程安全，但在iOS上即时使用atomic也不一定是线程安全的，要保证线程安全需要使用锁机制。</p>
+<p>nonatomic：可以发现几乎所有代码的属性设置都会使用nonatomic，这样能够提高访问性能，在iOS中使用锁机制的开销较大，会损耗性能。</p>
+</blockquote>
+<h2 id="2、readwrite-readonly"><a href="#2、readwrite-readonly" class="headerlink" title="2、readwrite/readonly"></a>2、readwrite/readonly</h2><p>readwrite：（默认参数）是编译器的默认选项，表示自动生成getter和setter，如果需要getter和setter不写即可。</p>
+<p>readonly：表示只合成getter而不合成setter。</p>
+<h2 id="3、retain-／-assign-／-copy-／-strong-／-weak-／-unsafe-unretained"><a href="#3、retain-／-assign-／-copy-／-strong-／-weak-／-unsafe-unretained" class="headerlink" title="3、retain ／ assign ／ copy ／ strong ／ weak ／ unsafe_unretained"></a>3、retain ／ assign ／ copy ／ strong ／ weak ／ unsafe_unretained</h2><p>这些指示符用于内存管理，在赋值时使用：</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>说明 </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>assign</td>
+<td>单纯赋值（用于标量类型）</td>
+</tr>
+<tr>
+<td>retain</td>
+<td>进行保持操作</td>
+</tr>
+<tr>
+<td>unsafe_unretain</td>
+<td>同assign一样（用于ARC）</td>
+</tr>
+<tr>
+<td>strong</td>
+<td>同retain一样（用于ARC）</td>
+</tr>
+<tr>
+<td>weak</td>
+<td>弱引用（用于ARC）</td>
+</tr>
+<tr>
+<td>copy</td>
+<td>复制对象（修饰的属性会在内存里拷贝一份对象，两个指针指向不同的内存地址）</td>
+</tr>
+</tbody>
+</table>
+<p><strong>注意：</strong></p>
+<p>（1）weak与strong一般在开启ARC机制下使用。</p>
+<p>（2）strong决定了对象的存亡（一个对象如果没有强指针指向（引用计数器为0）时，对象将被销毁，释放内存），其指向一个对象，相当于该对象做了一次retain操作。</p>
+<p>（3）非ARC的retain，相当于ARC的strong，ARC的弱引用weak相当于非ARC的assign</p>
+<p>（4）使用copy参数与使用retain参数产生的set方法一致（将生成set方法中的retain改为copy即可）</p>
+<p>（5）strong,weak, unsafe_unretained往往都是用来声明属性的，如果想声明临时变量就得用<strong>strong, </strong>weak, <strong>unsafe_unretained, </strong>autoreleasing, 其用法与上面介绍的类似。</p>
+<h3 id="3-1、assign、retain、unsafe-unretained、weak"><a href="#3-1、assign、retain、unsafe-unretained、weak" class="headerlink" title="3.1、assign、retain、unsafe_unretained、weak"></a>3.1、assign、retain、unsafe_unretained、weak</h3><p>assign：（默认参数）单纯赋值，一般用于==标量类型==的赋值操作，也可以修饰对象类型，但是此时可能出现野指针。</p>
+<blockquote>
+<ol>
+<li><p>assign表示setter方法直接赋值，不进行retain操作，即对属性只进行简单的赋值操作，不更改所赋的新值的引用计数，也不改变旧值的引用计数，常用于标量类型，如NSInteger，NSUInteger，CGFloat，NSTimeInterval等及C数据类型（int, float, double, char等）。</p>
+</li>
+<li><p>id类型也要用assign，所以一般iOS中的代理delegate属性都会用assign来标示。</p>
+</li>
+<li><p>assign也可以修饰对象如NSString等类型对象，上面说过使用assign修饰不会更改所赋的新值的引用计数，也不改变旧值的引用计数，如果当所赋的新值引用计数为0对象被销毁时属性并不知道，编译器不会将该属性置为nil，指针仍旧指向之前被销毁的内存，这时访问该属性会产生野指针错误并崩溃，因此<strong>使用assign修饰的类型一定要为标量类型</strong>。</p>
+</li>
+</ol>
+</blockquote>
+<p>retain：使用retain指示符定义属性时，当把某个属性赋值给该属性时，该属性原来所引用的对象的引用计数减1，被赋值对象的引用计数加1。</p>
+<blockquote>
+<p>==提示==：在未启用ARC机制的情况下，retain是一个很有用的指示符：当一个对象的引用计数大于1时，该对象不应该被回收。启用ARC机制之后，一般较少使用retain指示符。</p>
+</blockquote>
+<p>unsafe_unretained:与assign类似，只是它只能修饰对象类型，可能出现野指针。</p>
+<blockquote>
+<p>使用unsafe_unretained修饰时效果与assign相同，不会增加引用计数，当所赋的值被销毁时不会被置为nil可能会发生野指针错误。unsafe_unretained与assign的区别在于，unsafe_unretained只能修饰对象，不能修饰标量类型，而assign两者均可修饰。</p>
+</blockquote>
+<p>weak:修饰对象类型，可避免出现野指针。</p>
+<blockquote>
+<p>使用weak修饰的时候同样不会增加所赋的新值的引用计数，也不减少旧值的引用计数，但当该值被销毁时，weak修饰的属性会被自动赋值为nil，这样就可以避免野指针错误。</p>
+</blockquote>
+<h3 id="3-2-strong、weak"><a href="#3-2-strong、weak" class="headerlink" title="3.2 strong、weak"></a>3.2 strong、weak</h3><p>strong：单纯赋值，只能修饰对象，表示属性对被赋值对象持有强引用。强引用的意思是：只要该强引用指　向被赋值的对象，那么该对象就不会自动回收。</p>
+<blockquote>
+<ol>
+<li><p>strong表示一种“拥有关系”(owning relationship)，会先保留新值即增加新值的引用计数，然后再释放旧值即减少旧值的引用计数。如果对一些对象需要保持强引用则使用strong。</p>
+</li>
+<li><p>==提示==：为了防止多态的影响，对NSString进行修饰时一般使用copy。</p>
+</li>
+</ol>
+</blockquote>
+<p>weak：表示对被赋值的对象持有弱引用，弱引用的意思是：即使该弱引用指向被赋值的对象，该对象也可能被回收。常用在修饰delegate等防止循环引用的场。</p>
+<blockquote>
+<p>weak表示一种“非拥有关系”(nonowning relationship)，对新值不会增加引用计数，也不会减少旧值的引用计数。所赋的值在引用计数为0被销毁后，weak修饰的属性会被自动置为nil能够有效防止野指针错误。</p>
+</blockquote>
+<h3 id="3-3-copy"><a href="#3-3-copy" class="headerlink" title="3.3 copy"></a>3.3 copy</h3><p>copy：修饰的属性会在内存里拷贝一份对象，两个指针指向不同的内存地址。</p>
+<blockquote>
+<ol>
+<li><p>copy一般用来修饰有对应可变类型子类的对象。如：NSString/NSMutableString, NSArray/NSMutableArray, NSDictionary/NSMutableDictionary等。</p>
+</li>
+<li><p>为确保这些不可变对象因为可变子类对象影响，需要copy一份备份，如果不使用copy修饰，使用strong或assign等修饰时，二者的指针指向的是同一个地址空间，故会因为多态导致属性值被修改，或者，出现野指针。</p>
+</li>
+</ol>
+</blockquote>
+<p>copy与assign的区别是：copy两个指针指向不同的内存地址，而assign两个指针指向的是同一个内存地址；copy只能用于对象类型，而assign可用于标量类型及对象类型，但一般用于标量类型</p>
+<h3 id="copy的题外话"><a href="#copy的题外话" class="headerlink" title="copy的题外话"></a>copy的题外话</h3><p>有时候我们需要copy一个对象，或是mutableCopy一个对象，这时需要遵守NSCopying和NSMutableCopying协议，来实现copyWithZone:和mutableCopyWithZone:两个方法，而不是重写copy和mutableCopy两个方法。</p>
+<p>Foundation框架中的很多数据类型已经帮我们实现了上述两个方法，因此我们可以使用copy方法和mutableCopy方法来复制一个对象，两者的区别在于copy的返回值仍未不可变对象，mutableCopy的返回值为可变对象。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">copy</th>
+<th style="text-align:center">mutableCopy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">NS*</td>
+<td style="text-align:center">浅拷贝，只拷贝指针，地址相同</td>
+<td style="text-align:center">单层深拷贝，拷贝内容，地址不同</td>
+</tr>
+<tr>
+<td style="text-align:center">NSMutable*</td>
+<td style="text-align:center">单层深拷贝，拷贝内容，地址不同</td>
+<td style="text-align:center">单层深拷贝，拷贝内容，地址不同</td>
+</tr>
+</tbody>
+</table>
+<p>由上述表格可以看出，对于不可变类型，使用copy方法时是浅拷贝，只拷贝指针，因为内容是不会变化的。使用mutableCopy时由于返回可变对象因此需要一份拷贝，供其他对象使用。对于可变类型，不管是copy还是mutableCopy均会进行深拷贝，所指向指针不同。</p>
+<h2 id="4、setter-／-getter"><a href="#4、setter-／-getter" class="headerlink" title="4、setter ／ getter"></a>4、setter ／ getter</h2><p>用于set、get方法重命名（常用于BOOL类型的成员变量的get方法,BOOL方法常以is开头（set方法很少用））</p>
+<blockquote>
+<p>setter：给成员变量的set方法重命名，set方法默认命名：- （void） set成员变量名（成员变量名首字母大写）：（成员变量数据类型）成员变量名。<br>getter：给成员变量的set方法重命名，get方法默认命名：- （成员变量数据类型） 成员变量名。</p>
+</blockquote>
+<p>比如:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">getter＝myName;</div><div class="line">//可以看到setter方法后面有一个（:）,这是因为我们需要在后面添加参数。</div><div class="line">setter=setName:;</div></pre></td></tr></table></figure>
+<h1 id="二、synthesize"><a href="#二、synthesize" class="headerlink" title="二、synthesize"></a>二、synthesize</h1><p>synthesize ：合成访问器方法，实现property所声明的方法的定义。其实说直白就像是：property声明了一些成员变量的访问方法，synthesize则定义了由property声明的方法。他们之前的对应关系是:</p>
+<blockquote>
+<p>property 声明方法 -&gt;头文件中申明getter和setter方法 </p>
+<p>synthesize定义方法 -&gt; m文件中实现getter和setter方法。<br>(在.m文件中同时实现getter和setter时候需要@synthesize age = _age)</p>
+</blockquote>
+<p>在Xcode4.5及以后的版本中，可以省略@synthesize，编译器会自动帮你加上get 和 set 方法的实现，并且默认会去访问_age这个成员变量，如果找不到_age这个成员变量，会自动生成一个叫做 _age的私有成员变量。</p>
+<blockquote>
+<p>参考链接：<br>链接：<a href="http://www.jianshu.com/p/646ae400fe7b" target="_blank" rel="external">http://www.jianshu.com/p/646ae400fe7b</a><br>链接：<a href="http://www.imlifengfeng.com/blog/?p=453" target="_blank" rel="external">http://www.imlifengfeng.com/blog/?p=453</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/04/UITableView的理解/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="qiaoshuangyuan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="qiaoshuangyuan---BLOG">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/09/04/UITableView的理解/" itemprop="url">UITableView的理解</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-04T00:00:00+08:00">
+                2017-09-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="一、UITableView"><a href="#一、UITableView" class="headerlink" title="一、UITableView"></a>一、UITableView</h1><h2 id="UITableView基本介绍"><a href="#UITableView基本介绍" class="headerlink" title="UITableView基本介绍"></a>UITableView基本介绍</h2><p>UITableView在iOS开发中是应用最为广泛的一种控件。在了解UITableView之前，首先看一下iOS开发中UI控件的组织结构：</p>
+<p><img src="http://otqbqeai0.bkt.clouddn.com/iOS%E5%BC%80%E5%8F%91-UI%E6%8E%A7%E4%BB%B6-%E7%BB%84%E7%BB%87%E7%BB%93%E6%9E%84.jpg" alt="UI控件组织结构"></p>
+<p>从上图中可以看出，UITableView它的继承关系是：</p>
+<p><img src="http://otqbqeai0.bkt.clouddn.com/UITableView%E7%9A%84%E7%BB%A7%E6%89%BF%E5%85%B3%E7%B3%BB.png" width="670" alt="tableView继承关系"></p>
+<p>因此UITableView可以响应事件、支持垂直滚动,⽽且性能极佳 。</p>
+<h3 id="UITableView的结构"><a href="#UITableView的结构" class="headerlink" title="UITableView的结构"></a>UITableView的结构</h3><p>UITableView的结构如下图所示：</p>
+<p><img src="http://otqbqeai0.bkt.clouddn.com/tableView%E7%BB%93%E6%9E%84%E5%9B%BE.png" width="670" alt="tableView结构图"></p>
+<p>可以看出：<br>一个tableView =  一个tableView HeaderView + 若干个<strong>section</strong> + 一个tableView FooterView;<br>一个section   =  一个section HeaderView + 若干个<strong>cell</strong> + 一个section FooterView ;</p>
+<h3 id="UITableView的初始化方法为："><a href="#UITableView的初始化方法为：" class="headerlink" title="UITableView的初始化方法为："></a>UITableView的初始化方法为：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">//设置表的大小、位置以及样式（style：包括plain和group）</div><div class="line">- (instancetype)initWithFrame:(CGRect)frame style:(UITableViewStyle)style;</div><div class="line"></div><div class="line">//或者用UIView的初始化方法，设置表的大小和位置</div><div class="line">- (instancetype)initWithFrame:(CGRect)frame;</div></pre></td></tr></table></figure>
+<h3 id="UITableView的风格"><a href="#UITableView的风格" class="headerlink" title="UITableView的风格"></a>UITableView的风格</h3><p><code>UITableViewStyle</code>是一个枚举，有两种样式：<br><code>UITableViewStylePlain</code> 和  <code>UITableViewStyleGrouped</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">typedef NS_ENUM(NSInteger, UITableViewStyle) &#123;</div><div class="line">    UITableViewStylePlain,                  // 标准的表视图样式</div><div class="line">    UITableViewStyleGrouped                 // 分组的表视图样式</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>两种样式如下图所示：</p>
+<p><img src="http://otqbqeai0.bkt.clouddn.com/tableView%E7%9A%84%E9%A3%8E%E6%A0%BC.png" width="670" alt="tableView风格"></p>
+<h3 id="UITableView的常用属性"><a href="#UITableView的常用属性" class="headerlink" title="UITableView的常用属性"></a>UITableView的常用属性</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">// 获取表视图的样式(plain和group)</div><div class="line">@property (nonatomic, readonly) UITableViewStyle style;</div><div class="line"></div><div class="line">// 可设置UITableViewDataSource的代理</div><div class="line">@property (nonatomic, weak, nullable) id &lt;UITableViewDataSource&gt; dataSource;</div><div class="line"></div><div class="line">// 可设置UITableViewDelegate的代理</div><div class="line">@property (nonatomic, weak, nullable) id &lt;UITableViewDelegate&gt; delegate;</div><div class="line"></div><div class="line">// tableView的行高、组头试图、组尾视图的高度，未设置时，返回默认值：-1.0</div><div class="line">// 当与代理方法同时实现时，按照代理方法中的高度进行设置</div><div class="line">@property (nonatomic) CGFloat rowHeight;             </div><div class="line">@property (nonatomic) CGFloat sectionHeaderHeight;</div><div class="line">@property (nonatomic) CGFloat sectionFooterHeight;</div><div class="line"></div><div class="line">// 性能优化（如果实现）,估计tableView的行高、组头试图、组尾视图的高度，未设置时，返回默认值：0.0</div><div class="line">//在显示的时候回去调用heightForRowAtIndexPath，真正开始计算</div><div class="line">@property (nonatomic) CGFloat estimatedRowHeight;</div><div class="line">@property (nonatomic) CGFloat estimatedSectionHeaderHeight;</div><div class="line">@property (nonatomic) CGFloat estimatedSectionFooterHeight;</div><div class="line"></div><div class="line">// section的个数</div><div class="line">@property (nonatomic, readonly) NSInteger numberOfSections;</div><div class="line"></div><div class="line">// 返回可见的cells</div><div class="line">@property (nonatomic, readonly) NSArray&lt;__kindof UITableViewCell *&gt; *visibleCells;</div><div class="line">// 返回可见的位置</div><div class="line">@property (nonatomic, readonly, nullable) NSArray&lt;NSIndexPath *&gt; *indexPathsForVisibleRows;</div><div class="line"></div><div class="line">// 设置背景视图，只能写入,可根据tableView 的大小进行自动调整</div><div class="line">@property (nonatomic, strong, nullable) UIView *backgroundView</div><div class="line"> </div><div class="line">/*</div><div class="line">* Editing</div><div class="line">*／</div><div class="line">// 是否允许编辑，默认是NO</div><div class="line">@property (nonatomic, getter=isEditing) BOOL editing;</div><div class="line">- (void)setEditing:(BOOL)editing animated:(BOOL)animated;</div><div class="line"></div><div class="line">// 在非编辑下，行是否可以选中，默认为YES</div><div class="line">@property (nonatomic) BOOL allowsSelection;</div><div class="line">// 在编辑模式下，行是否可以选中，默认为NO</div><div class="line">@property (nonatomic) BOOL allowsSelectionDuringEditing;</div><div class="line"></div><div class="line">// 在非编辑模式下，是否允许同时选择多行，默认为NO</div><div class="line">@property (nonatomic) BOOL allowsMultipleSelection;</div><div class="line">// 在编辑模式下，是否允许同时选择多行，默认为NO</div><div class="line">@property (nonatomic) BOOL allowsMultipleSelectionDuringEditing;</div><div class="line"></div><div class="line">/*</div><div class="line">* Selection</div><div class="line">*／</div><div class="line">// 返回选定cell所对应的indexPath,单行，未选中时返回nil</div><div class="line">@property (nonatomic, readonly, nullable) NSIndexPath *indexPathForSelectedRow;</div><div class="line">// 返回选定cells所对应的indexPath集合,多行，未选中时返回nil</div><div class="line">@property (nonatomic, readonly, nullable) NSArray&lt;NSIndexPath *&gt; *indexPathsForSelectedRows; </div><div class="line"></div><div class="line">/*</div><div class="line">* Appearance</div><div class="line">*／</div><div class="line">// 指定当tableView中多少行的时候开始显示IndexList，</div><div class="line">// 默认的设置是NSIntegerMax，即默认是不显示indexList的</div><div class="line">@property (nonatomic) NSInteger sectionIndexMinimumDisplayRowCount;</div><div class="line"></div><div class="line">// 索引号颜色</div><div class="line">@property (nonatomic, strong, nullable) UIColor *sectionIndexColor;   </div><div class="line">  </div><div class="line">// 索引号背景颜色(未触摸／点击时显示的背景颜色)            </div><div class="line">@property (nonatomic, strong, nullable) UIColor *sectionIndexBackgroundColor;</div><div class="line"></div><div class="line">// 跟踪索引号背景颜色（触摸／点击时显示的背景颜色）</div><div class="line">@property (nonatomic, strong, nullable) UIColor *sectionIndexTrackingBackgroundColor;</div><div class="line"></div><div class="line">// cell之间分隔线的样式（默认是UITableViewCellSeparatorStyleSingleLine）</div><div class="line">@property (nonatomic) UITableViewCellSeparatorStyle separatorStyle;</div><div class="line"></div><div class="line">// cell的分割线的偏移。(UIEdgeInsets中的right、left起作用???)</div><div class="line">@property (nonatomic) UIEdgeInsets separatorInset; </div><div class="line"></div><div class="line">// cell之间的分割线颜色（默认是灰色）</div><div class="line">@property (nonatomic, strong, nullable) UIColor *separatorColor;</div><div class="line"></div><div class="line">// 设置毛玻璃效果</div><div class="line">@property (nonatomic, copy, nullable) UIVisualEffect *separatorEffect;</div><div class="line"></div><div class="line">// if cell margins are derived from the width of the readableContentGuide.</div><div class="line">@property (nonatomic) BOOL cellLayoutMarginsFollowReadableWidth; </div><div class="line"></div><div class="line">// 设置headerView</div><div class="line">@property (nonatomic, strong, nullable) UIView *tableHeaderView;                           </div><div class="line">// 设置footerView</div><div class="line">@property (nonatomic, strong, nullable) UIView *tableFooterView;                           </div><div class="line"></div><div class="line">// 记住上次的选择</div><div class="line">@property (nonatomic) BOOL remembersLastFocusedIndexPath;</div></pre></td></tr></table></figure>
+<h3 id="UITableView的方法"><a href="#UITableView的方法" class="headerlink" title="UITableView的方法"></a>UITableView的方法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">// 表格进入编辑状态，是否有动画</div><div class="line">- (void)setEditing:(BOOL)editing animated:(BOOL)animated;</div><div class="line"></div><div class="line">/*</div><div class="line">* 数据相关</div><div class="line">*／</div><div class="line">// 刷新整个表视图</div><div class="line">- (void)reloadData;</div><div class="line">// 刷新索引栏</div><div class="line">- (void)reloadSectionIndexTitles</div><div class="line"></div><div class="line">/*</div><div class="line">* 信息相关Info</div><div class="line">*／</div><div class="line">// 获取某个组有多少行</div><div class="line">- (NSInteger)numberOfRowsInSection:(NSInteger)section;</div><div class="line"></div><div class="line">~~//根据section或indexPath获得section、headerView、footerView、row对应的CGRect</div><div class="line">~~</div><div class="line">// 获取某个组的位置和大小(包括头尾试图和所有行)</div><div class="line">- (CGRect)rectForSection:(NSInteger)section</div><div class="line">// 取某个组的头视图的位置和大小</div><div class="line">- (CGRect)rectForHeaderInSection:(NSInteger)section;</div><div class="line">// 取某个组的尾视图的位置和大小</div><div class="line">- (CGRect)rectForFooterInSection:(NSInteger)section;</div><div class="line">// 获取某一行的位置和大小</div><div class="line">- (CGRect)rectForRowAtIndexPath:(NSIndexPath *)indexPath;</div><div class="line"></div><div class="line">~~//根据point、cell或rect获得indexPath</div><div class="line">~~</div><div class="line">// 根据某一点，返回indexPath(如果点不在tableView的任何一行上，则返回nil)</div><div class="line">- (nullable NSIndexPath *)indexPathForRowAtPoint:(CGPoint)point;                        </div><div class="line">// 获取单元格的IndexPath信息(如果cell不可见，则返回nil)</div><div class="line">- (nullable NSIndexPath *)indexPathForCell:(UITableViewCell *)cell;</div><div class="line">// 返回某个区域内 多个单元格信息（如果rect无效，则返回nil）</div><div class="line">- (nullable NSArray&lt;NSIndexPath *&gt; *)indexPathsForRowsInRect:(CGRect)rect;</div><div class="line"></div><div class="line">// 通过单元格的indexPath得到单元格</div><div class="line">- (nullable __kindof UITableViewCell *)cellForRowAtIndexPath:(NSIndexPath *)indexPath;</div><div class="line"></div><div class="line">// 获得头视图（可进行头视图设置）</div><div class="line">- (nullable UITableViewHeaderFooterView *)headerViewForSection:(NSInteger)section;</div><div class="line">// 获得尾视图（可进行尾视图设置）</div><div class="line">- (nullable UITableViewHeaderFooterView *)footerViewForSection:(NSInteger)section;</div><div class="line"></div><div class="line">/*</div><div class="line">* 插入、删除、更新、移动</div><div class="line">*／</div><div class="line">// 二者配合使用</div><div class="line">//添加或删除前必须调用，只添加或删除才会更新行数</div><div class="line">- (void)beginUpdates;</div><div class="line">// 添加或删除后必须调用，只添加或删除方法时才会更新</div><div class="line">- (void)endUpdates;</div><div class="line"></div><div class="line">~~//对section进行插入、删除、更新、移动操作</div><div class="line">~~</div><div class="line">// 插入一个或多个section，并使用动画</div><div class="line">- (void)insertSections:(NSIndexSet *)sections withRowAnimation:(UITableViewRowAnimation)animation;</div><div class="line">// 删除一个或多个section，并使用动画</div><div class="line">- (void)deleteSections:(NSIndexSet *)sections withRowAnimation:(UITableViewRowAnimation)animation;</div><div class="line">// 更新一个或多个section，并使用动画</div><div class="line">- (void)reloadSections:(NSIndexSet *)sections withRowAnimation:(UITableViewRowAnimation)animation;</div><div class="line">// 移动某一个section到目标section位置</div><div class="line">- (void)moveSection:(NSInteger)section toSection:(NSInteger)newSection;</div><div class="line"></div><div class="line">~~//对row进行插入、删除、更新、移动操作</div><div class="line">~~</div><div class="line">// 插入一个或多个row，并使用动画</div><div class="line">- (void)insertRowsAtIndexPaths:(NSArray&lt;NSIndexPath *&gt; *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation;</div><div class="line">// 删除一个或多个row，并使用动画</div><div class="line">- (void)deleteRowsAtIndexPaths:(NSArray&lt;NSIndexPath *&gt; *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation;</div><div class="line">// 更新一个或多个row，并使用动画</div><div class="line">- (void)reloadRowsAtIndexPaths:(NSArray&lt;NSIndexPath *&gt; *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation;</div><div class="line">// 移动某一个row到目标row位置</div><div class="line">- (void)moveRowAtIndexPath:(NSIndexPath *)indexPath toIndexPath:(NSIndexPath *)newIndexPath NS_AVAILABLE_IOS(5_0);</div><div class="line"></div><div class="line">/*</div><div class="line">* 选择相关</div><div class="line">*／</div><div class="line">// 设置选中某个区域内的单元格</div><div class="line">- (void)selectRowAtIndexPath:(nullable NSIndexPath *)indexPath animated:(BOOL)animated scrollPosition:(UITableViewScrollPosition)scrollPosition;</div><div class="line">// 取消选中的单元格</div><div class="line">- (void)deselectRowAtIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated;</div><div class="line"></div><div class="line">/*</div><div class="line">* 重用机制</div><div class="line">*／</div><div class="line">// 获取重用队列里的cell，代理调用</div><div class="line">- (nullable __kindof UITableViewCell *)dequeueReusableCellWithIdentifier:(NSString *)identifier;</div><div class="line">- (__kindof UITableViewCell *)dequeueReusableCellWithIdentifier:(NSString *)identifier forIndexPath:(NSIndexPath *)indexPath</div><div class="line">- (nullable __kindof UITableViewHeaderFooterView *)dequeueReusableHeaderFooterViewWithIdentifier:(NSString *)identifier</div><div class="line"></div><div class="line">/*</div><div class="line">* 注册</div><div class="line">*／</div><div class="line">~~// 注册cell</div><div class="line">~~</div><div class="line">// 注册xib文件自定义的cell</div><div class="line">- (void)registerNib:(nullable UINib *)nib forCellReuseIdentifier:(NSString *)identifier;</div><div class="line">// 注册纯代码自定义的cell</div><div class="line">- (void)registerClass:(nullable Class)cellClass forCellReuseIdentifier:(NSString *)identifier;</div><div class="line"></div><div class="line">~~// 注册header，footer</div><div class="line">~~</div><div class="line">// 注册xib文件自定义的header，footer</div><div class="line">- (void)registerNib:(nullable UINib *)nib forHeaderFooterViewReuseIdentifier:(NSString *)identifier;</div><div class="line">- // 注册xib文件自定义的header，footer</div><div class="line">- (void)registerClass:(nullable Class)aClass forHeaderFooterViewReuseIdentifier:(NSString *)identifier；</div></pre></td></tr></table></figure>
+<h1 id="2、UITableView的代理"><a href="#2、UITableView的代理" class="headerlink" title="2、UITableView的代理"></a>2、UITableView的代理</h1><p>我们发现单元格高度、分组标题高度以及尾部说明的高度都需要调整，此时就需要使用代理方法。UITableView代理方法有很多，例如监听单元格显示周期、监听单元格选择编辑操作、设置是否高亮显示单元格、设置行高等:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">/*</div><div class="line">* 展示相关（自定义展示）</div><div class="line">*／</div><div class="line">__</div><div class="line">// 将要展示的cell会回调（可以在其中对cell进行修改设置）</div><div class="line">- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;</div><div class="line">// 将要展示的headView会回调</div><div class="line">- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section;</div><div class="line">// 将要展示的headView会回调</div><div class="line">- (void)tableView:(UITableView *)tableView willDisplayFooterView:(UIView *)view forSection:(NSInteger)section;</div><div class="line"></div><div class="line">// 完成视图展示时回调，此时已经在界面上了</div><div class="line">// 完成展示的cell时，会回调</div><div class="line">- (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath*)indexPath;</div><div class="line">// 完成展示的headerView时，会回调</div><div class="line">- (void)tableView:(UITableView *)tableView didEndDisplayingHeaderView:(UIView *)view forSection:(NSInteger)section;</div><div class="line">// 完成展示的footerView时，会回调</div><div class="line">- (void)tableView:(UITableView *)tableView didEndDisplayingFooterView:(UIView *)view forSection:(NSInteger)section;</div><div class="line"></div><div class="line">/*</div><div class="line">* 高度设置相关</div><div class="line">*／</div><div class="line">// 设置cell高度（这里高度通过协议返回，是为了table能准确的定位出要显示的Cell-index，从而满足UITableView的重用机制)）</div><div class="line">- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;</div><div class="line">// 设置headerView高度</div><div class="line">- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section;</div><div class="line">// 设置footerView高度</div><div class="line">- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section;</div><div class="line"></div><div class="line">//性能优化（如果实现），加载的时候使用的是本方法，由于是一个固定的值，不需要计算，所以加载速度回很快，在显示的时候回去调用heightForRowAtIndexPath，真正开始计算。</div><div class="line">// row的估计高度</div><div class="line">- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath;</div><div class="line">// header的估计高度</div><div class="line">- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForHeaderInSection:(NSInteger)section;</div><div class="line">// footer的估计高度</div><div class="line">- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForFooterInSection:(NSInteger)section;</div><div class="line"></div><div class="line">/*</div><div class="line">* 自定义section的头尾视图相关</div><div class="line">*／</div><div class="line">//可设置每个section-header和 footer 的自定义视图</div><div class="line">- (nullable UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section; </div><div class="line">- (nullable UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section;</div><div class="line"></div><div class="line">/*</div><div class="line">* row的 Accessoriy 相关</div><div class="line">*／</div><div class="line">// 可设置cell上Accessory的类型accessaryType（共5种）</div><div class="line">- (UITableViewCellAccessoryType)tableView:(UITableView *)tableView accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath;</div><div class="line">// 设置cell上右指向Accessory的响应方法（当cell的accessaryType为UITableViewCellAccessoryDetailDisclosureButton时，</div><div class="line">// 点击accessaryView将会调用delegate的tableView:accessoryButtonTappedForRowWithIndexPath方法。否则只是didSelectRowAtIndexPath；）</div><div class="line">- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath;</div><div class="line"></div><div class="line">/*</div><div class="line">* 选择（selection）相关</div><div class="line">*／</div><div class="line">_// 是否高亮_</div><div class="line">// cell高亮回调，一般在选中的时候高亮</div><div class="line">- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath;</div><div class="line">// cell一直高亮</div><div class="line">- (void)tableView:(UITableView *)tableView didHighlightRowAtIndexPath:(NSIndexPath *)indexPath;</div><div class="line">// cell选中时不高亮</div><div class="line">- (void)tableView:(UITableView *)tableView didUnhighlightRowAtIndexPath:(NSIndexPath *)indexPath;</div><div class="line"></div><div class="line">_/* 先点击row0，再点击row1，俩着执行顺序（在下一行将要选中后才取消上一行的选中 ）：</div><div class="line">willSelectRowAtIndexPath 当前row为:0 </div><div class="line">didSelectRowAtIndexPath 当前row为:0 </div><div class="line">willSelectRowAtIndexPath 当前row为:1 </div><div class="line">willDeselectRowAtIndexPath 当前row为:0 </div><div class="line">didDeselectRowAtIndexPath 当前row为:0 </div><div class="line">didSelectRowAtIndexPath 当前row为:1 </div><div class="line">*/_</div><div class="line">// 用户选择之前调用，将要选中</div><div class="line">- (nullable NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath;</div><div class="line">// 将要取消选中（此时已选中下一个row）</div><div class="line">- (nullable NSIndexPath *)tableView:(UITableView *)tableView willDeselectRowAtIndexPath:(NSIndexPath *)indexPath;</div><div class="line">// 用户选中时调用，已经选中当前行</div><div class="line">- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;</div><div class="line">// 用户选择之后调用，取消选中（已经选中当前row）</div><div class="line">- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath;</div><div class="line"></div><div class="line">/*</div><div class="line">* 编辑（editing）相关</div><div class="line">*／</div><div class="line">// 返回编辑的类型1.没有2.删除3.插入</div><div class="line">- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath;</div><div class="line">// 删除提示文本（删除确认按钮上的标题文字）</div><div class="line">- (nullable NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath;</div><div class="line"></div><div class="line">// 左滑小菜单 可以自定义想要的编辑操作 （要求ios8以上）</div><div class="line">- (nullable NSArray&lt;UITableViewRowAction *&gt; *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath</div><div class="line"></div><div class="line">// 编辑模式下，cell是否需要缩进，默认是YES(缩进)，否则使用NO（只对grouped的TableView有效。）</div><div class="line">- (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath;</div><div class="line">// 用于设置缩进的级别</div><div class="line">- (NSInteger)tableView:(UITableView *)tableView indentationLevelForRowAtIndexPath:(NSIndexPath *)indexPath; </div><div class="line"></div><div class="line">// 编辑状态发生改变时调用</div><div class="line">// 指定cell开始编辑时调用</div><div class="line">- (void)tableView:(UITableView *)tableView willBeginEditingRowAtIndexPath:(NSIndexPath *)indexPath;</div><div class="line">// 指定cell编辑完成时调用</div><div class="line">- (void)tableView:(UITableView *)tableView didEndEditingRowAtIndexPath:(nullable NSIndexPath *)indexPath</div><div class="line"></div><div class="line">/*</div><div class="line">* 复制（copy）相关</div><div class="line">*／</div><div class="line">// 复制的时候三个方法都必须实现</div><div class="line">// 是否将要显示指定cell的菜单</div><div class="line">- (BOOL)tableView:(UITableView *)tableView shouldShowMenuForRowAtIndexPath:(NSIndexPath *)indexPath;</div><div class="line">// 是否能使用 sender 对指定cell进行执行操作</div><div class="line">- (BOOL)tableView:(UITableView *)tableView canPerformAction:(SEL)action forRowAtIndexPath:(NSIndexPath *)indexPath withSender:(nullable id)sender;</div><div class="line">//通过 sender 对指定cell执行操作</div><div class="line">- (void)tableView:(UITableView *)tableView performAction:(SEL)action forRowAtIndexPath:(NSIndexPath *)indexPath withSender:(nullable id)sender;</div><div class="line"></div><div class="line">/*</div><div class="line">* 移动（move）再排序相关</div><div class="line">*／</div><div class="line">// 移动row时执行（将一个指定cell从source处移动到proposed（提议的）目标处  ）</div><div class="line">- (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath;</div></pre></td></tr></table></figure>
+<h1 id="3、UITableView的数据源"><a href="#3、UITableView的数据源" class="headerlink" title="3、UITableView的数据源"></a>3、UITableView的数据源</h1><p>由于iOS是遵循MVC模式设计的，很多操作都是通过代理和外界沟通的，但对于数据源控件除了代理还有一个数据源属性，通过它和外界进行数据交互。 </p>
+<blockquote>
+<p>数据源：（一般为控制器）根据索引路径（indexPath：可以定位到唯一的一个单元格）为某一个单元格提供数据。</p>
+<p>索引路径：（NSIndexpath）拥有两个属性section（段）、row（行），通过这两个属性即可定位UITableView中的唯一一个单元格cell</p>
+</blockquote>
+<p>对于UITableView设置完dataSource（<code>tableView.dataSource=self</code>）后，需要实现UITableViewDataSource协议：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">//以下两个代理方法必须实</div><div class="line">@required</div><div class="line">//每个section下行数（必须实现）</div><div class="line">- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;</div><div class="line"></div><div class="line">//通过indexpath返回cell的具体样式和内容（必须实现）</div><div class="line">//可以在这里对cell进行设置（*这里使用了可以重复利用 UITableViewCell 的机制*）</div><div class="line">- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath;</div><div class="line"></div><div class="line">//其他代理方法可选实现</div><div class="line">@optional</div><div class="line">//返回分组section数，默认是1</div><div class="line">-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView;</div><div class="line"></div><div class="line">/*</div><div class="line">* 头尾标题内容(_字体样式固定，可以通过UILable改变_)</div><div class="line">*／</div><div class="line">//返回每个section头标题内容</div><div class="line">-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section;</div><div class="line">//返回每个section尾部标题说明</div><div class="line">-(NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section;</div><div class="line"></div><div class="line">/*</div><div class="line">* 索引相关</div><div class="line">*／</div><div class="line">//返回每个section标题索引(可以在这里设置索引)</div><div class="line">-(NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView;</div><div class="line">//点击索引触发（告诉tableView哪个section将会响应点击的索引 ）                                          </div><div class="line">- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index</div><div class="line"></div><div class="line">/*</div><div class="line">* 编辑相关</div><div class="line">*／</div><div class="line">//是否可编辑</div><div class="line">- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath;</div><div class="line">// 是否可拖拽（使用代理方法`tableView:moveRowAtIndexPath:toIndexPath:`之前设置）</div><div class="line">- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath;</div><div class="line">//插入/删除指定数据（根据编辑风格`editingStyle`确定是插入还是删除）</div><div class="line">- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath;</div><div class="line"></div><div class="line">//重新排序/移动数据操作</div><div class="line">- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath;</div></pre></td></tr></table></figure>
+<p>cell的编辑风格UITableViewCellEditingStyle是个结构体，共有三个元素：没有风格、删除、插入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">typedef NS_ENUM(NSInteger, UITableViewCellEditingStyle) &#123;</div><div class="line">    UITableViewCellEditingStyleNone,</div><div class="line">    UITableViewCellEditingStyleDelete,</div><div class="line">    UITableViewCellEditingStyleInsert</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h2 id="二、UITableViewCell基本介绍"><a href="#二、UITableViewCell基本介绍" class="headerlink" title="二、UITableViewCell基本介绍"></a>二、UITableViewCell基本介绍</h2><h3 id="UITableViewCell的结构"><a href="#UITableViewCell的结构" class="headerlink" title="UITableViewCell的结构"></a>UITableViewCell的结构</h3><p>从上图中可以看到，在UITableView中数据只有行的概念，并没有列的概念，其中每行数据都是一个UITableViewCell。下图是UITableViewCell内置好的控件，可以看见contentView控件作为父控件,里面包括两个UILabel控件（textLabel,detailTextLabel）,一个UIImage控件（imageView）,一个AccessoryView，分别用于容器、显示内容、图片和详情（当然，这些子控件并不一定要全部使用）：</p>
+<p><img src="http://otqbqeai0.bkt.clouddn.com/tableViewCell%E7%BB%93%E6%9E%84%E5%9B%BE%E5%AE%8C%E6%95%B4%E7%AF%87.png" width="670" alt="tableViewCell结构图"></p>
+<p>UITableViewCell的示意图为：</p>
+<p><img src="http://otqbqeai0.bkt.clouddn.com/tableViewCell%E7%9A%84%E7%BB%93%E6%9E%84%E5%9B%BE3.png" width="670" alt="tableViewCell示意图"></p>
+<h3 id="UITableViewCell的风格"><a href="#UITableViewCell的风格" class="headerlink" title="UITableViewCell的风格"></a>UITableViewCell的风格</h3><p>UITableViewCell有四种风格，根据不同的分格，各个控件会进行不同的分布。四种风格分别为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">typedef NS_ENUM(NSInteger, UITableViewCellStyle) &#123;</div><div class="line">UITableViewCellStyleDefault,    //左侧显示textLabel,不显示detailTextLabel,imageView可选(显示在最左边)</div><div class="line">UITableViewCellStyleValue1,     //左侧显示textLabel,右侧显示detailTextLabel,imageView可选(显示在最左边)</div><div class="line">UITableViewCellStyleValue2,     //左侧依次显示textLabel和detailTextLabel,不显示imageView</div><div class="line">UITableViewCellStyleSubtitle    //左上方显示textLabel,左下方显示detailTextLabel,imageView可选(显示在最左边)</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h3 id="UITableViewCellAccessoryType"><a href="#UITableViewCellAccessoryType" class="headerlink" title="UITableViewCellAccessoryType"></a>UITableViewCellAccessoryType</h3><p>UITableViewCell中还可显示accessoryView（辅助指示视图），位于UITableViewCell的最右边，accessaryView的样式UITableViewCellAccessoryType有五种：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">typedef NS_ENUM(NSInteger, UITableViewCellAccessoryType) &#123;</div><div class="line">UITableViewCellAccessoryNone,                   //没有视图               </div><div class="line">UITableViewCellAccessoryDisclosureIndicator,    //箭头</div><div class="line">UITableViewCellAccessoryDetailButton            //button</div><div class="line">UITableViewCellAccessoryDetailDisclosureButton, //button和箭头</div><div class="line">UITableViewCellAccessoryCheckmark,              //对勾</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>当然，我们也可以通过cell的accessoryView属性来自定义辅助指示视图（比如往右边放一个开关）。</p>
+<h2 id="3、自定义UITableViewCell加载：代码-amp-xib"><a href="#3、自定义UITableViewCell加载：代码-amp-xib" class="headerlink" title="3、自定义UITableViewCell加载：代码&amp;xib"></a>3、自定义UITableViewCell加载：代码&amp;xib</h2><h3 id="代码自定义"><a href="#代码自定义" class="headerlink" title="代码自定义"></a>代码自定义</h3><p><strong>方法一：</strong>（使用重用机制alloc一个cell，IDENTIFIER作为重用机制查找的标识）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#define IDENTIFIER  @&quot;identifier&quot;</div><div class="line">- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath &#123;</div><div class="line">    UITableViewCell* cell = nil;</div><div class="line">//使用重用机制，IDENTIFIER作为重用机制查找的标识，tableview查找可用cell时通过IDENTIFIER检索，如果有则cell不为nil</div><div class="line">    cell = [tableView dequeueReusableCellWithIdentifier:IDENTIFIER];  </div><div class="line">    if (cell == nil) &#123;</div><div class="line">        cell = [[TableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:IDENTIFIER];//代码创建的cell需要使用该初始化方法</div><div class="line">    &#125;</div><div class="line">    return cell; </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>方法二：</strong>（首先在viewdidload中调用registerClass注册cell）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#define IDENTIFIER  @&quot;identifier&quot;</div><div class="line">首先在viewdidload中注册cell</div><div class="line">- (void)viewDidLoad &#123;</div><div class="line">    [super viewDidLoad];</div><div class="line"></div><div class="line">    [self.tableView registerClass:[TableViewCell class] forCellReuseIdentifier:IDENTIFIER];</div><div class="line">&#125;</div><div class="line"></div><div class="line">然后在tableview的delegate中</div><div class="line">- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath &#123;</div><div class="line">    UITableViewCell* cell = nil;</div><div class="line">    cell = [tableView dequeueReusableCellWithIdentifier:IDENTIFIER];</div><div class="line">  //这里会发现，cell一直都不是nil，不再需要创建</div><div class="line">    if (cell == nil) &#123;</div><div class="line">           NSLog(@&quot;cell create at row:%ld&quot;, (long)indexPath.row);</div><div class="line">    &#125;</div><div class="line">    return cell; </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="xib自定义"><a href="#xib自定义" class="headerlink" title="xib自定义"></a>xib自定义</h3><p><strong>方法一：</strong>（代理方法中调用 loadNibNamed方法）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#define IDENTIFIER  @&quot;identifier&quot;</div><div class="line">- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath &#123;</div><div class="line">    UITableViewCell* cell = nil;</div><div class="line">    cell = [tableView dequeueReusableCellWithIdentifier:IDENTIFIER];</div><div class="line">    if (cell == nil) &#123;</div><div class="line">        cell = [[NSBundle mainBundle] loadNibNamed:@&quot;TableViewCell&quot; owner:nil options:nil].firstObject;</div><div class="line">        NSLog(@&quot;cell create at row:%ld&quot;, (long)indexPath.row);//此处要使用loadnib方式！</div><div class="line">    &#125;</div><div class="line">    NSNumber* number = self.array[indexPath.row];</div><div class="line">    cell.textLabel.text = number.stringValue;</div><div class="line">    return cell; </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>方法二：</strong>（首先在viewdidload中调用registerNib注册cell）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#define IDENTIFIER  @&quot;identifier&quot;</div><div class="line">首先在viewdidload中注册cell</div><div class="line">- (void)viewDidLoad &#123;</div><div class="line">    [super viewDidLoad];</div><div class="line"></div><div class="line">    [self.tableView registerNib:[UINib nibWithNibName:@&quot;TableViewCell&quot; bundle:nil] forCellReuseIdentifier:IDENTIFIER];</div><div class="line">&#125;</div><div class="line">然后在tableview的delegate中</div><div class="line">- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath &#123;</div><div class="line">    UITableViewCell* cell = nil;</div><div class="line">    cell = [tableView dequeueReusableCellWithIdentifier:IDENTIFIER];</div><div class="line">    if (cell == nil) &#123;</div><div class="line">        //这里会发现，cell一直都不是nil，不再需要创建</div><div class="line">        NSLog(@&quot;cell create at row:%ld&quot;, (long)indexPath.row);</div><div class="line">    &#125;</div><div class="line">    return cell; </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/21/cocoaPods的安装和使用/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -874,7 +1283,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-count">6</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -887,7 +1296,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-count">3</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
